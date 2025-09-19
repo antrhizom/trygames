@@ -1,1 +1,217 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Der Amtsweg-Irrgarten</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        #game-container {
+            width: 800px;
+            height: 600px;
+            background-color: #d0e0f0;
+            border: 5px solid #333;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .scene {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none; /* Scenes are hidden by default */
+        }
+        .scene.active {
+            display: block; /* The active scene is visible */
+        }
+        .background {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .clickable {
+            position: absolute;
+            cursor: pointer;
+            background-color: rgba(255, 255, 0, 0); /* Invisible, but helps with debugging */
+            transition: background-color 0.2s;
+        }
+        .clickable:hover {
+            background-color: rgba(255, 255, 0, 0.3);
+            border: 2px solid yellow;
+            box-sizing: border-box;
+        }
+        #message-box {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #eee;
+            font-size: 1.1em;
+            display: none;
+        }
+        #win-screen {
+            background-color: rgba(25, 135, 84, 0.9);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        #win-screen h1 {
+            font-size: 3em;
+        }
+        #win-screen p {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1em;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ddd;
+        }
 
+        /* Specific positions for elements */
+        /* --- Scene: Town Square --- */
+        #go-post { top: 250px; left: 50px; width: 180px; height: 250px; }
+        #go-tax { top: 220px; left: 300px; width: 200px; height: 280px; }
+        #go-residents { top: 240px; left: 580px; width: 200px; height: 260px; }
+        
+        /* --- Scene: Post Office --- */
+        #clerk-post { top: 200px; left: 350px; width: 150px; height: 300px; }
+        #back-from-post { top: 520px; left: 350px; width: 100px; height: 60px; }
+
+        /* --- Scene: Tax Office --- */
+        #clerk-tax { top: 180px; left: 400px; width: 160px; height: 320px; }
+        #back-from-tax { top: 520px; left: 350px; width: 100px; height: 60px; }
+    </style>
+</head>
+<body>
+
+    <div id="game-container">
+        <div id="scene-town-square" class="scene active">
+            <img src="https://storage.googleapis.com/gemini-prod-us-west1-assets/984b63523098319e/town_square.png" class="background" alt="Ein Stadtplatz mit drei Gebäuden: Post, Steueramt und Einwohnerkontrolle.">
+            <div id="go-post" class="clickable" title="Zur Post gehen"></div>
+            <div id="go-tax" class="clickable" title="Zum Steueramt gehen"></div>
+            <div id="go-residents" class="clickable" title="Zur Einwohnerkontrolle gehen"></div>
+        </div>
+
+        <div id="scene-post" class="scene">
+            <img src="https://storage.googleapis.com/gemini-prod-us-west1-assets/984b63523098319e/post_office.png" class="background" alt="Das Innere einer Postfiliale mit einem Schalter.">
+            <div id="clerk-post" class="clickable" title="Mit dem Schalterbeamten sprechen"></div>
+            <div id="back-from-post" class="clickable" title="Zurück zum Stadtplatz"></div>
+        </div>
+        
+        <div id="scene-tax" class="scene">
+            <img src="https://storage.googleapis.com/gemini-prod-us-west1-assets/984b63523098319e/tax_office.png" class="background" alt="Das Innere eines sterilen Büros im Steueramt.">
+            <div id="clerk-tax" class="clickable" title="Mit dem Sachbearbeiter sprechen"></div>
+            <div id="back-from-tax" class="clickable" title="Zurück zum Stadtplatz"></div>
+        </div>
+
+        <div id="win-screen" class="scene">
+            <h1>Richtig!</h1>
+            <p>Sie haben die Einwohnerkontrolle gefunden. Hier können Sie Ihren Umzug offiziell melden. Herzlichen Glückwunsch, Sie haben den Amtsweg-Irrgarten gemeistert!</p>
+            <button onclick="location.reload()">Nochmal spielen</button>
+        </div>
+
+        <div id="message-box"></div>
+    </div>
+
+    <script>
+        // --- GAME STATE AND DATA ---
+        const messageBox = document.getElementById('message-box');
+        let messageTimeout;
+
+        const messages = {
+            start: "Ich bin gerade in meine neue Wohnung gezogen. Jetzt muss ich meinen Wohnsitz bei der Gemeinde anmelden. Aber wo genau muss ich hin?",
+            postClerk: "Guten Tag! Für einen Nachsendeauftrag sind Sie hier richtig. Aber um Ihren Wohnsitz offiziell anzumelden, müssen Sie zur Einwohnerkontrolle Ihrer neuen Gemeinde.",
+            taxClerk: "Willkommen in der Gemeinde! Für Ihre Steuern sind wir später zuständig. Die Anmeldung muss aber zuerst bei der Einwohnerkontrolle erfolgen. Die informieren uns dann automatisch.",
+            wrongPlace: "Das sieht nicht richtig aus. Hier scheint es nur um Briefe und Pakete zu gehen.",
+            correctPlace: "Das muss die richtige Stelle sein. 'Einwohnerkontrolle' klingt vielversprechend."
+        };
+
+        // --- GAME LOGIC ---
+
+        function showMessage(text, duration = 5000) {
+            clearTimeout(messageTimeout);
+            messageBox.textContent = text;
+            messageBox.style.display = 'block';
+            messageTimeout = setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, duration);
+        }
+
+        function changeScene(sceneId) {
+            // Hide all scenes
+            document.querySelectorAll('.scene').forEach(scene => {
+                scene.classList.remove('active');
+            });
+            // Show the target scene
+            document.getElementById(sceneId).classList.add('active');
+        }
+
+        // --- EVENT LISTENERS ---
+
+        // Initial message when the game loads
+        window.onload = () => {
+            showMessage(messages.start, 6000);
+        };
+        
+        // --- Town Square Interactions ---
+        document.getElementById('go-post').addEventListener('click', () => {
+            changeScene('scene-post');
+            showMessage("Mal sehen, ob die Post mir weiterhelfen kann...");
+        });
+
+        document.getElementById('go-tax').addEventListener('click', () => {
+            changeScene('scene-tax');
+            showMessage("Vielleicht das Steueramt? Man muss ja immer alles melden.");
+        });
+
+        document.getElementById('go-residents').addEventListener('click', () => {
+            showMessage(messages.correctPlace, 2000);
+            setTimeout(() => {
+                changeScene('win-screen');
+            }, 2000);
+        });
+
+        // --- Post Office Interactions ---
+        document.getElementById('clerk-post').addEventListener('click', () => {
+            showMessage(messages.postClerk, 7000);
+        });
+        document.getElementById('back-from-post').addEventListener('click', () => {
+            changeScene('scene-town-square');
+            showMessage("Okay, die Post war es nicht. Zurück zum Platz.");
+        });
+
+        // --- Tax Office Interactions ---
+        document.getElementById('clerk-tax').addEventListener('click', () => {
+            showMessage(messages.taxClerk, 8000);
+        });
+        document.getElementById('back-from-tax').addEventListener('click', () => {
+            changeScene('scene-town-square');
+            showMessage("Also auch nicht das Steueramt. Ich muss wohl weitersuchen.");
+        });
+
+    </script>
+</body>
+</html>
