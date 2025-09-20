@@ -18,24 +18,35 @@
             padding: 20px;
             box-sizing: border-box;
         }
+
         h1 {
             margin-bottom: 20px;
             text-align: center;
         }
+        
+        /* Der Container für das iFrame */
         .powerpoint-container {
+            position: relative;
             width: 90%;
-            max-width: 962px; /* Maximale Breite anpassen, falls nötig */
-            background: white;
+            max-width: 962px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden; /* Stellt sicher, dass der iframe die abgerundeten Ecken beachtet */
+            overflow: hidden; /* Wichtig für die abgerundeten Ecken */
+            
+            /* Sorgt für ein 16:9 Seitenverhältnis (Standard für Präsentationen) */
+            aspect-ratio: 16 / 9;
         }
-        iframe {
+        
+        /* Das iFrame selbst */
+        .powerpoint-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
             width: 100%;
-            height: 565px; /* Höhe anpassen, um sie an die Breite anzupassen */
+            height: 100%;
             border: none;
-            display: block;
         }
+
         .back-link {
             margin-top: 30px;
             color: white;
@@ -46,6 +57,7 @@
             border-radius: 25px;
             transition: background 0.3s ease;
         }
+
         .back-link:hover {
             background: rgba(255, 255, 255, 0.4);
         }
@@ -55,9 +67,9 @@
 
     <h1>Interaktives PowerPoint-Lernspiel</h1>
 
-    <div class="powerpoint container">
-      <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vT_y1nJP8MJrg3mn5wGbUDjk134MOYk5Z1oNbD_7ToDB_PgnqrWLFmobqJhA_KBUg/pubembed?start=false&loop=false&delayms=60000" frameborder="0" width="960" height="749" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
-        </div>
+    <div class="powerpoint-container">
+        <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vT_y1nJP8MJrg3mn5wGbUDjk134MOYk5Z1oNbD_7ToDB_PgnqrWLFmobqJhA_KBUg/pubembed?start=false&loop=false&delayms=60000" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+    </div>
 
     <a href="index.html" class="back-link">Zurück zur Übersicht</a>
 
