@@ -1,1 +1,64 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerPoint Lernspiel</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .powerpoint-container {
+            width: 90%;
+            max-width: 962px; /* Maximale Breite anpassen, falls nötig */
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden; /* Stellt sicher, dass der iframe die abgerundeten Ecken beachtet */
+        }
+        iframe {
+            width: 100%;
+            height: 565px; /* Höhe anpassen, um sie an die Breite anzupassen */
+            border: none;
+            display: block;
+        }
+        .back-link {
+            margin-top: 30px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 25px;
+            transition: background 0.3s ease;
+        }
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
 
+    <h1>Interaktives PowerPoint-Lernspiel</h1>
+
+    <div class="powerpoint-container">
+        </div>
+
+    <a href="index.html" class="back-link">Zurück zur Übersicht</a>
+
+</body>
+</html>
