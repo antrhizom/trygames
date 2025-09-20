@@ -1,1 +1,107 @@
-
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wahlkampf Lehrerfrei - Lovable App</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: #2c3e50;
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .game-info {
+            margin-top: 15px;
+            color: white;
+        }
+        
+        .game-info h1 {
+            margin: 10px 0;
+            font-size: 24px;
+            color: #ecf0f1;
+        }
+        
+        .game-info p {
+            margin: 10px 0;
+            font-size: 14px;
+            color: #bdc3c7;
+            line-height: 1.5;
+            max-width: 800px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .back-button::before {
+            content: "← ";
+            margin-right: 5px;
+        }
+        
+        .iframe-container {
+            flex: 1;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .loading-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-button">Zurück zur Startseite</a>
+        <div class="game-info">
+            <h1>Wahlkampf Lehrerfrei - Das Klick-Adventure</h1>
+            <p>Erlebe ein spannendes Point-and-Click-Adventure Spiel! Erkunde interaktive Szenen, löse Rätsel und treffe wichtige Entscheidungen im Wahlkampf. Erstellt mit Lovable - der modernen Plattform für Web-Apps.</p>
+        </div>
+    </div>
+    
+    <div class="iframe-container">
+        <div class="loading-message">Lade Wahlkampf Lehrerfrei App...</div>
+        <iframe 
+            src="https://wahlkampf-lehrerfrei.lovable.app" 
+            title="Wahlkampf Lehrerfrei App"
+            allowfullscreen
+            onload="this.previousElementSibling.style.display='none'">
+        </iframe>
+    </div>
+</body>
+</html>
