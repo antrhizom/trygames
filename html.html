@@ -1,1 +1,680 @@
-
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mission: Bildung 3047 - Kanton Zürich Galactic</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Space+Mono&display=swap');
+        
+        body {
+            font-family: 'Space Mono', monospace;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1f3a 100%);
+            color: #00ff88;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #fff, transparent),
+                radial-gradient(1px 1px at 40px 70px, #fff, transparent);
+            background-size: 200px 200px;
+            animation: stars 20s linear infinite;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        @keyframes stars {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-200px); }
+        }
+        
+        .game-container {
+            max-width: 850px;
+            width: 100%;
+            background: rgba(20, 25, 40, 0.95);
+            border: 2px solid #00ff88;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 0 40px rgba(0, 255, 136, 0.3);
+        }
+        
+        h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.5em;
+            color: #00ff88;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.8);
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .location {
+            color: #ffaa00;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .scene {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+        
+        .scene.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .narrator {
+            background: rgba(0, 255, 136, 0.1);
+            border-left: 4px solid #00ff88;
+            padding: 15px;
+            margin: 20px 0;
+            font-style: italic;
+            color: #88ffbb;
+        }
+        
+        .story-text {
+            line-height: 1.8;
+            margin: 20px 0;
+        }
+        
+        .character {
+            display: inline-block;
+            font-size: 1.5em;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        
+        .old-institution {
+            color: #ff6b6b;
+            font-weight: bold;
+        }
+        
+        .new-tech {
+            color: #00ffff;
+            font-weight: bold;
+        }
+        
+        .choice-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            background: rgba(0, 255, 136, 0.2);
+            border: 2px solid #00ff88;
+            color: #00ff88;
+            cursor: pointer;
+            transition: all 0.3s;
+            border-radius: 8px;
+            font-family: inherit;
+            text-align: left;
+        }
+        
+        .choice-btn:hover {
+            background: rgba(0, 255, 136, 0.3);
+            transform: translateX(10px);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+        
+        .document {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #666;
+            padding: 12px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            border-radius: 5px;
+        }
+        
+        .warning {
+            background: rgba(255, 68, 68, 0.2);
+            border: 2px solid #ff4444;
+            color: #ff8888;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .success {
+            background: rgba(0, 255, 136, 0.3);
+            border: 2px solid #00ff88;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+        
+        .groups-list {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .group-item {
+            margin: 8px 0;
+            color: #aaffcc;
+        }
+        
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-label {
+            color: #ffaa00;
+            font-size: 0.8em;
+        }
+        
+        .stat-value {
+            color: #00ff88;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>🚀 Mission: Bildung 3047</h1>
+        <div class="location" id="location">📍 Kanton Zürich Galactic</div>
+        
+        <!-- START -->
+        <div id="start" class="scene active">
+            <div class="narrator">
+                <span class="character">📡</span> 
+                Systemlog: Jahr 3047, Bildungssektor Zürich - Status: Es ist kompliziert...
+            </div>
+            
+            <div class="story-text">
+                <p>Die Bildung stagniert seit 1000 Jahren. Zwei parallele Systeme kämpfen um die Kontrolle:</p>
+                
+                <div class="groups-list">
+                    <div class="group-item"><span class="character">🤖</span> <span class="new-tech">KI-Algorithmus-Räte</span> - Wollen alles digitalisieren</div>
+                    <div class="group-item"><span class="character">👨‍🏫</span> <span class="old-institution">Lehrpersonen & LKB</span> - WhatsApp-Gruppe mit 47'000 Nachrichten</div>
+                    <div class="group-item"><span class="character">🎩</span> <span class="old-institution">Bildungsrat Kanton Zürich</span> - Tagt noch mit Gipfeli</div>
+                    <div class="group-item"><span class="character">🏛️</span> <span class="old-institution">Kantonsrat</span> - Braucht 6 Monate für Entscheide</div>
+                    <div class="group-item"><span class="character">🏭</span> <span class="old-institution">Berufsverbände</span> - Wollen praxisnahe Ausbildung</div>
+                    <div class="group-item"><span class="character">📰</span> <span class="old-institution">NZZ & Tagi</span> - Berichten widersprüchlich</div>
+                    <div class="group-item"><span class="character">💼</span> <span class="old-institution">Schulleitung</span> - Kommuniziert per Papier</div>
+                    <div class="group-item"><span class="character">🔧</span> <span class="new-tech">Techno-Reformer</span> - Wollen echte Innovation</div>
+                </div>
+                
+                <p>Du bist Teil der <span class="character">🌟</span> <strong>Lernenden-Union</strong>. Zeit, beide Systeme aufzumischen!</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('lkb')">
+                🍰 Die LKB infiltrieren (der legendäre Kuchen-Trick)
+            </button>
+            <button class="choice-btn" onclick="goToScene('viral')">
+                📱 Social Media Kampagne starten (TikTok trifft Quanten-Netz)
+            </button>
+            <button class="choice-btn" onclick="goToScene('elternrat')">
+                👥 Den Elternrat überzeugen (die heimliche Macht)
+            </button>
+        </div>
+        
+        <!-- LKB PATH -->
+        <div id="lkb" class="scene">
+            <div class="location">📍 Lehrerzimmer - Kaffeemaschine von 2024</div>
+            <div class="narrator">
+                <span class="character">🍰</span> 
+                LKB-Sitzung 87'456 - Rüeblitorte öffnet alle Türen
+            </div>
+            
+            <div class="story-text">
+                <p>Mit drei Kuchen bewaffnet infiltrierst du die <span class="old-institution">LKB</span>.</p>
+                
+                <p><span class="character">👨‍🏫</span> Herr Meier: "Traktandum 1: Die Kreide ist schon wieder alle. Traktandum 2: Der OHP ist kaputt..."</p>
+                
+                <p>Du unterbrichst: "Was wenn Lernende SELBST entscheiden könnten, wie sie lernen?"</p>
+                
+                <div class="document">
+                    📊 Abstimmung:
+                    Dafür: 12 (Lehrer unter 500 Jahren)
+                    Dagegen: 47 (Angst vor Veränderung)
+                    Enthaltung: 23 (waren am Handy)
+                </div>
+                
+                <p><span class="character">👩‍🏫</span> Eine junge Lehrerin flüstert: "Psst, wir Jungen treffen uns nachher im Hologramm-Raum..."</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('young-teachers')">
+                🌱 Geheimtreffen mit den progressiven Lehrern
+            </button>
+            <button class="choice-btn" onclick="goToScene('leak')">
+                📰 Abstimmung an Medien leaken
+            </button>
+            <button class="choice-btn" onclick="goToScene('schulleitung')">
+                💼 Direkt zur Schulleitung (riskant!)
+            </button>
+        </div>
+        
+        <!-- VIRAL PATH -->
+        <div id="viral" class="scene">
+            <div class="location">📍 Digitaler Raum - Alle Plattformen</div>
+            <div class="narrator">
+                <span class="character">📱</span> 
+                #BildungUpdate3047 explodiert im Netz
+            </div>
+            
+            <div class="story-text">
+                <p>Dein Post: "POV: Es ist 3047 und dein Lehrer benutzt noch PowerPoint von 2024 💀"</p>
+                
+                <p>Reaktionen:</p>
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">TikTok</div>
+                        <div class="stat-value">12M Views</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Quanten-Netz</div>
+                        <div class="stat-value">∞ Shares</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">WhatsApp</div>
+                        <div class="stat-value">Lehrer in Panik</div>
+                    </div>
+                </div>
+                
+                <p><span class="character">📰</span> <span class="old-institution">NZZ</span>: "Respektlose Jugend!"</p>
+                <p><span class="character">📰</span> <span class="old-institution">Tagi</span>: "Endlich! Revolution in der Bildung?"</p>
+                <p><span class="character">🔧</span> Die <span class="new-tech">Techno-Reformer</span> melden sich: "Wir unterstützen euch!"</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('media-conference')">
+                🎤 Pressekonferenz einberufen
+            </button>
+            <button class="choice-btn" onclick="goToScene('tech-alliance')">
+                🤝 Allianz mit Techno-Reformern
+            </button>
+            <button class="choice-btn" onclick="goToScene('bildungsrat-panic')">
+                🎩 Den panischen Bildungsrat konfrontieren
+            </button>
+        </div>
+        
+        <!-- ELTERNRAT PATH -->
+        <div id="elternrat" class="scene">
+            <div class="location">📍 Aula - Elternratssitzung</div>
+            <div class="narrator">
+                <span class="character">👥</span> 
+                Die unterschätzte Macht: Der Elternrat
+            </div>
+            
+            <div class="story-text">
+                <p>Du crashst die Elternratssitzung. 200 besorgte Eltern schauen dich an.</p>
+                
+                <p><span class="character">👔</span> Präsident: "Wer sind Sie? Stehen Sie auf der Traktandenliste?"</p>
+                
+                <p>Du: "Ihre Kinder lernen mit Methoden von vor 1000 Jahren! Wollen Sie das wirklich?"</p>
+                
+                <p><span class="character">👩</span> Eine Mutter: "Aber... aber wir hatten das auch so!"</p>
+                <p><span class="character">👨</span> Ein Vater: "Moment, meine Tochter sagt das auch immer..."</p>
+                
+                <div class="document">
+                    WhatsApp Elterngruppe explodiert:
+                    "Hat jemand das gehört?"
+                    "Vielleicht haben sie recht?"
+                    "Aber Tradition!!!"
+                </div>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('parent-split')">
+                ⚡ Den Elternrat spalten (Jung vs Alt)
+            </button>
+            <button class="choice-btn" onclick="goToScene('demo')">
+                🎓 Live-Demo für die Eltern
+            </button>
+        </div>
+        
+        <!-- YOUNG TEACHERS -->
+        <div id="young-teachers" class="scene">
+            <div class="location">📍 Geheimer Hologramm-Raum</div>
+            <div class="narrator">
+                <span class="character">🌱</span> 
+                Die jungen Lehrkräfte wollen Veränderung!
+            </div>
+            
+            <div class="story-text">
+                <p>12 progressive Lehrer (alle unter 500) versammeln sich.</p>
+                
+                <p><span class="character">👩‍🏫</span> "Wir sind es so leid! Die LKB blockiert alles!"</p>
+                <p><span class="character">👨‍🏫</span> "Wenn wir gemeinsam mit den Schülern..."</p>
+                
+                <p>Ein Plan entsteht: Parallele Strukturen aufbauen!</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('parallel-system')">
+                🚀 Paralleles Bildungssystem starten
+            </button>
+            <button class="choice-btn" onclick="goToScene('kantonsrat')">
+                🏛️ Gemeinsam zum Kantonsrat
+            </button>
+        </div>
+        
+        <!-- MEDIA CONFERENCE -->
+        <div id="media-conference" class="scene">
+            <div class="location">📍 Medienkonferenz - Rathaus Zürich</div>
+            <div class="narrator">
+                <span class="character">🎤</span> 
+                Alle Augen sind auf dich gerichtet
+            </div>
+            
+            <div class="story-text">
+                <p><span class="old-institution">SRF</span> mit Kameras von 1995. Hologramm-Reporter schweben.</p>
+                
+                <p>Du: "Der <span class="old-institution">Bildungsrat</span> braucht 6 Monate für eine Email-Antwort!"</p>
+                <p>"Die <span class="old-institution">LKB</span> diskutiert seit 200 Jahren über Kreidemangel!"</p>
+                <p>"Währenddessen kontrollieren <span class="new-tech">KI-Räte</span> ohne demokratische Legitimation!"</p>
+                
+                <p><span class="character">🤖</span> KI-Räte: "SYSTEM ERROR... DEMOCRACY DETECTED..."</p>
+                <p><span class="character">🎩</span> Bildungsrat: "Sondersitzung... in 3 Monaten..."</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('ultimatum')">
+                ⚡ Ultimatum: Sofortige Reform!
+            </button>
+            <button class="choice-btn" onclick="goToScene('demo')">
+                🎓 Live-Demonstration ankündigen
+            </button>
+        </div>
+        
+        <!-- DEMO -->
+        <div id="demo" class="scene">
+            <div class="location">📍 Sechseläutenplatz - Öffentliche Demo</div>
+            <div class="narrator">
+                <span class="character">🎓</span> 
+                Die Demonstration die alles verändert
+            </div>
+            
+            <div class="story-text">
+                <p>1000 Lernende zeigen live: Bildung ohne Wandtafel, ohne PowerPoint!</p>
+                
+                <p>Quantenphysik wird erlebbar. Geschichte wird zu VR. Sprachen durch KI-Immersion.</p>
+                
+                <p><span class="character">👨‍🏫</span> Alte Lehrer lassen ihre Kreide fallen.</p>
+                <p><span class="character">👥</span> Eltern filmen begeistert.</p>
+                <p><span class="character">🤖</span> KI-Räte: "EFFICIENCY... OPTIMAL..."</p>
+                <p><span class="character">🎩</span> Bildungsrat: "Notfall... Sitzung... SOFORT!"</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('finale')">
+                🌟 Zum finalen Showdown!
+            </button>
+        </div>
+        
+        <!-- KANTONSRAT -->
+        <div id="kantonsrat" class="scene">
+            <div class="location">📍 Kantonsratssaal</div>
+            <div class="narrator">
+                <span class="character">🏛️</span> 
+                Mit 1000 Unterschriften vor dem Kantonsrat
+            </div>
+            
+            <div class="story-text">
+                <p>Du stehst mit Lehrern, Schülern und sogar einigen Eltern vor dem <span class="old-institution">Kantonsrat</span>.</p>
+                
+                <p>"Wir fordern das Recht auf selbstbestimmte Bildung!"</p>
+                
+                <div class="document">
+                    Motion 3047.2.1: 
+                    "Antrag auf Modernisierung des Bildungswesens"
+                    Status: In Bearbeitung (seit 2847)
+                </div>
+                
+                <p>Die Räte sind überfordert. Aber der Druck ist zu gross!</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('finale')">
+                ⚖️ Zur Abstimmung zwingen
+            </button>
+        </div>
+        
+        <!-- FINALE -->
+        <div id="finale" class="scene">
+            <div class="location">📍 Grosser Ratssaal - Historische Sitzung</div>
+            <div class="narrator">
+                <span class="character">🎯</span> 
+                Der Moment der Wahrheit
+            </div>
+            
+            <div class="story-text">
+                <p>ALLE sind da: <span class="old-institution">Bildungsrat</span>, <span class="old-institution">Kantonsrat</span>, <span class="old-institution">LKB</span>, <span class="old-institution">Elternrat</span>, <span class="old-institution">Schulleitung</span>, <span class="new-tech">KI-Räte</span>, <span class="new-tech">Techno-Reformer</span>.</p>
+                
+                <p>Historisch: Erste gemeinsame Sitzung seit 1000 Jahren!</p>
+                
+                <p>Du präsentierst deinen Plan: "Ein System, das ALLE integriert!"</p>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stat-label">Tradition</div>
+                        <div class="stat-value">✓ Bewahrt</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Innovation</div>
+                        <div class="stat-value">✓ Möglich</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-label">Demokratie</div>
+                        <div class="stat-value">✓ Gestärkt</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('victory')">
+                🤝 Kompromiss: Das Beste aus beiden Welten
+            </button>
+            <button class="choice-btn" onclick="goToScene('revolution')">
+                🔥 Revolution: Kompletter Neustart!
+            </button>
+        </div>
+        
+        <!-- VICTORY -->
+        <div id="victory" class="scene">
+            <div class="success">
+                🎊 MISSION ERFOLGREICH! 🎊
+            </div>
+            
+            <div class="story-text">
+                <p><strong>Das "Zürcher Bildungsgesetz 3047" wird verabschiedet!</strong></p>
+                
+                <p>✅ Lernende wählen zwischen KI, Hologramm UND traditionellem Unterricht</p>
+                <p>✅ Die <span class="old-institution">LKB</span> darf weiter tagen (jetzt mit Hologramm-Option)</p>
+                <p>✅ <span class="old-institution">Bildungsrat</span> wird digitalisiert (Emails in nur 3 Tagen!)</p>
+                <p>✅ <span class="old-institution">Elternrat</span> bekommt Mitspracherecht bei Innovation</p>
+                <p>✅ PowerPoints werden zu Quanten-Präsentationen</p>
+                <p>✅ Die Wandtafel bleibt - als nostalgisches AR-Overlay</p>
+                <p>✅ <span class="new-tech">KI-Räte</span> werden zu Beratern, nicht Herrschern</p>
+                
+                <div class="document">
+                    📰 NZZ: "Vernünftiger Kompromiss"
+                    📰 Tagi: "Historischer Durchbruch!"
+                    📱 TikTok: "WIR HABEN GEWONNEN! 🎉"
+                </div>
+                
+                <p><strong>Dein Name geht in die Geschichte ein!</strong></p>
+            </div>
+            
+            <button class="choice-btn" onclick="restart()">🔄 Nochmal spielen</button>
+        </div>
+        
+        <!-- REVOLUTION -->
+        <div id="revolution" class="scene">
+            <div class="warning">⚠️ Zu radikal!</div>
+            
+            <div class="story-text">
+                <p>Deine Revolution scheitert. Beide Seiten blockieren.</p>
+                <p>Der <span class="old-institution">Bildungsrat</span> vertagt auf unbestimmte Zeit.</p>
+                <p>Die <span class="new-tech">KI-Räte</span> fahren Notfallprotokoll.</p>
+                <p>Alles bleibt beim Alten. Die Kreide ist immer noch alle...</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('finale')">↩️ Anderen Ansatz wählen</button>
+        </div>
+        
+        <!-- ANDERE FAIL STATES -->
+        <div id="schulleitung" class="scene">
+            <div class="warning">⚠️ Schulleitung in Schockstarre!</div>
+            
+            <div class="story-text">
+                <p>Die <span class="old-institution">Schulleitung</span> ist völlig überfordert.</p>
+                <p>"Das... das müssen wir erst mit dem Bildungsrat..."</p>
+                <p>Email gesendet. Antwort in 6 Monaten erwartet.</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('lkb')">↩️ Anderen Weg versuchen</button>
+        </div>
+        
+        <div id="leak" class="scene">
+            <div class="narrator">
+                <span class="character">📰</span> 
+                Die Medien berichten widersprüchlich
+            </div>
+            
+            <div class="story-text">
+                <p><span class="old-institution">NZZ</span>: "LKB funktioniert einwandfrei!"</p>
+                <p><span class="old-institution">Tagi</span>: "Skandal in der LKB!"</p>
+                <p>Die Öffentlichkeit ist verwirrt. Nichts passiert.</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('demo')">
+                🎓 Taten statt Worte - Demo organisieren
+            </button>
+        </div>
+        
+        <!-- WEITERE SZENEN -->
+        <div id="tech-alliance" class="scene">
+            <div class="narrator">
+                <span class="character">🤝</span> 
+                Allianz mit den Techno-Reformern
+            </div>
+            
+            <div class="story-text">
+                <p>Die <span class="new-tech">Techno-Reformer</span> bieten ihre Hilfe an.</p>
+                <p>"Wir hacken das System - aber legal!"</p>
+                <p>Gemeinsam entwickelt ihr eine Parallel-Plattform.</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('demo')">
+                🎓 Öffentlich demonstrieren
+            </button>
+        </div>
+        
+        <div id="bildungsrat-panic" class="scene">
+            <div class="narrator">
+                <span class="character">🎩</span> 
+                Bildungsrat in Panik!
+            </div>
+            
+            <div class="story-text">
+                <p>Der <span class="old-institution">Bildungsrat</span> tagt ausserordentlich. Mit Gipfeli.</p>
+                <p>"Was machen wir nur? Die Jugend rebelliert!"</p>
+                <p>Beschluss: Kommission gründen. Bericht in 2 Jahren.</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('demo')">
+                🎓 Druck erhöhen - Demo!
+            </button>
+        </div>
+        
+        <div id="parent-split" class="scene">
+            <div class="narrator">
+                <span class="character">⚡</span> 
+                Der Elternrat ist gespalten!
+            </div>
+            
+            <div class="story-text">
+                <p>Junge Eltern (unter 600) unterstützen dich.</p>
+                <p>Alte Eltern wollen Tradition bewahren.</p>
+                <p>Chaos in der WhatsApp-Gruppe!</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('demo')">
+                🎓 Beide Seiten zur Demo einladen
+            </button>
+        </div>
+        
+        <div id="parallel-system" class="scene">
+            <div class="narrator">
+                <span class="character">🚀</span> 
+                Ein paralleles System entsteht!
+            </div>
+            
+            <div class="story-text">
+                <p>Ihr startet einfach. Ohne Bewilligung.</p>
+                <p>Selbstorganisierter Unterricht. Modern. Effektiv.</p>
+                <p>Die Behörden sind alarmiert!</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('finale')">
+                🌟 Showdown erzwingen
+            </button>
+        </div>
+        
+        <div id="ultimatum" class="scene">
+            <div class="narrator">
+                <span class="character">⚡</span> 
+                Das Ultimatum steht!
+            </div>
+            
+            <div class="story-text">
+                <p>"24 Stunden für eine Antwort, oder wir handeln!"</p>
+                <p>Alle Institutionen geraten in Bewegung.</p>
+            </div>
+            
+            <button class="choice-btn" onclick="goToScene('finale')">
+                ⏰ Die Zeit läuft...
+            </button>
+        </div>
+    </div>
+    
+    <script>
+        function goToScene(sceneId) {
+            document.querySelectorAll('.scene').forEach(scene => {
+                scene.classList.remove('active');
+            });
+            const targetScene = document.getElementById(sceneId);
+            if (targetScene) {
+                targetScene.classList.add('active');
+                
+                // Update location if needed
+                const locationEl = document.getElementById('location');
+                if (sceneId === 'start' || sceneId === 'victory') {
+                    locationEl.style.display = 'none';
+                } else {
+                    locationEl.style.display = 'block';
+                }
+            }
+        }
+        
+        function restart() {
+            goToScene('start');
+        }
+    </script>
+</body>
+</html>
