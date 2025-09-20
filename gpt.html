@@ -1,1 +1,220 @@
-
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demokratie Adventure Skatepark - ChatGPT</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background-color: rgba(44, 62, 80, 0.95);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+        
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            font-weight: bold;
+        }
+        
+        .back-button:hover {
+            background-color: #2980b9;
+        }
+        
+        .back-button::before {
+            content: "← ";
+            margin-right: 5px;
+        }
+        
+        .game-info {
+            margin-top: 15px;
+            color: white;
+        }
+        
+        .game-info h1 {
+            margin: 10px 0;
+            font-size: 28px;
+            color: #ecf0f1;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .game-info p {
+            margin: 10px 0;
+            font-size: 16px;
+            color: #bdc3c7;
+            line-height: 1.6;
+            max-width: 800px;
+        }
+        
+        .content-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        
+        .gpt-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .gpt-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, #10a37f 0%, #0a7e62 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            color: white;
+        }
+        
+        .gpt-card h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        
+        .gpt-card p {
+            color: #7f8c8d;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .gpt-features {
+            text-align: left;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .gpt-features h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .gpt-features ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .gpt-features li {
+            padding: 8px 0;
+            color: #5a6c7d;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .gpt-features li::before {
+            content: "🎮";
+            position: absolute;
+            left: 0;
+        }
+        
+        .launch-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #10a37f 0%, #0a7e62 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 10px 30px rgba(16, 163, 127, 0.3);
+        }
+        
+        .launch-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(16, 163, 127, 0.4);
+        }
+        
+        .launch-button::after {
+            content: " →";
+            margin-left: 5px;
+        }
+        
+        .note {
+            margin-top: 20px;
+            padding: 15px;
+            background: #fff3cd;
+            border-radius: 10px;
+            color: #856404;
+            font-size: 14px;
+            border: 1px solid #ffc107;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html" class="back-button">Zurück zur Startseite</a>
+        <div class="game-info">
+            <h1>Demokratie Adventure Skatepark</h1>
+            <p>Ein interaktives Text-Adventure powered by ChatGPT. Erlebe spannende Geschichten rund um Demokratie, Mitbestimmung und Jugendkultur im Skatepark-Setting!</p>
+        </div>
+    </div>
+    
+    <div class="content-container">
+        <div class="gpt-card">
+            <div class="gpt-icon">🤖</div>
+            <h2>ChatGPT Adventure</h2>
+            <p>Tauche ein in ein einzigartiges Text-Adventure, das von künstlicher Intelligenz gesteuert wird!</p>
+            
+            <div class="gpt-features">
+                <h3>Was dich erwartet:</h3>
+                <ul>
+                    <li>Interaktive Geschichten im Skatepark-Umfeld</li>
+                    <li>Entscheidungen über demokratische Prozesse</li>
+                    <li>Dynamische Handlungsverläufe</li>
+                    <li>Lerne spielerisch über Mitbestimmung</li>
+                    <li>KI-gesteuerte Dialoge und Szenarien</li>
+                </ul>
+            </div>
+            
+            <a href="https://chatgpt.com/g/g-68ce7d41217481919e37c8ad41ec03db-demokratie-adventure-skatepark" 
+               target="_blank" 
+               class="launch-button">
+                Adventure starten
+            </a>
+            
+            <div class="note">
+                <strong>Hinweis:</strong> Das Adventure öffnet sich in einem neuen Tab. Du benötigst einen ChatGPT-Account, um das Spiel zu spielen. Die Nutzung ist kostenlos möglich.
+            </div>
+        </div>
+    </div>
+</body>
+</html>
