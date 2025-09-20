@@ -1,1 +1,226 @@
-
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TryGames - EduPromptathon 2025</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        h1 {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        .event-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+        
+        .description {
+            font-size: 1.1em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .event-info {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            margin-top: 20px;
+        }
+        
+        .projects-section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+        
+        h2 {
+            color: #764ba2;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+        
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .project-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid #f0f0f0;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(103, 126, 234, 0.2);
+            border-color: #667eea;
+        }
+        
+        .project-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        
+        .project-title {
+            font-size: 1.3em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .project-desc {
+            color: #666;
+            font-size: 0.95em;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            padding: 20px;
+            animation: fadeIn 1s ease 0.4s both;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @media (max-width: 768px) {
+            h1 { font-size: 2em; }
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <span class="event-badge">eduPromptathon 2025</span>
+            <h1>🎮 TryGames - KI-Lernsettings durch Gaming</h1>
+            <p class="description">
+                Wir nehmen am <strong>eduPromptathon</strong> der EB Zürich teil und entwickeln innovative KI-gestützte Lernspiele! 
+                Unser Fokus liegt auf der Verbindung von spielbasiertem Lernen und künstlicher Intelligenz, 
+                um neue Wege in der Bildung zu erkunden.
+            </p>
+            <div class="event-info">
+                <strong>📅 Event:</strong> 19. - 20. September 2025<br>
+                <strong>🎯 Ziel:</strong> Entwicklung fachspezifischer KI-Lernsettings<br>
+                <strong>🌐 Info:</strong> <a href="https://www.eb-zuerich.ch/projekte/edupromptathon" target="_blank" style="color: #667eea;">www.eb-zuerich.ch/projekte/edupromptathon</a>
+            </div>
+        </header>
+        
+        <section class="projects-section">
+            <h2>🚀 Unsere KI-Lernspiel-Projekte</h2>
+            <div class="projects-grid">
+                <a href="godot.html" class="project-card">
+                    <div class="project-icon">🎯</div>
+                    <div class="project-title">Godot Engine</div>
+                    <div class="project-desc">KI-gestützte Spieleentwicklung mit der Open-Source Game Engine</div>
+                </a>
+                
+                <a href="twine.html" class="project-card">
+                    <div class="project-icon">📖</div>
+                    <div class="project-title">Twine Stories</div>
+                    <div class="project-desc">Interaktive Geschichten mit KI-generierten Narrativen</div>
+                </a>
+                
+                <a href="rpggo.html" class="project-card">
+                    <div class="project-icon">⚔️</div>
+                    <div class="project-title">RPG Go</div>
+                    <div class="project-desc">Rollenspiel-basiertes Lernen mit KI-Unterstützung</div>
+                </a>
+                
+                <a href="landbot-io.html" class="project-card">
+                    <div class="project-icon">🤖</div>
+                    <div class="project-title">Landbot.io</div>
+                    <div class="project-desc">Conversational Learning mit KI-Chatbots</div>
+                </a>
+            </div>
+        </section>
+        
+        <footer class="footer">
+            <p>💡 Entwickelt für den eduPromptathon 2025 | EB Zürich</p>
+            <p>🔗 GitHub: <a href="https://github.com/antrhizom/trygames" style="color: white;">antrhizom/trygames</a></p>
+        </footer>
+    </div>
+</body>
+</html><function_calls>
+<invoke name="artifacts">
+<parameter name="command">update
